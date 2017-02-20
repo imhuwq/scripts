@@ -7,6 +7,7 @@ class Post(db.Model):
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    # post has many-to-many-relationship with tag, which has tag date been stored
     tags = db.relationship('TagPost', backref=db.backref('post'))
 
     def __repr__(self):

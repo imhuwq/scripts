@@ -17,7 +17,6 @@ class Follow(db.Model):
 
 
 class User(db.Model):
-    # user has many-to-many-relationship with tag, which has tag date been stored
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True)
 
