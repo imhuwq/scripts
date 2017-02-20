@@ -1,0 +1,11 @@
+# for python
+*.pyc
+
+# for idea
+.idea
+
+# for temp script
+te.*
+
+# for database
+*.sqlite
