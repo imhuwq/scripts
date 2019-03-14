@@ -1,11 +1,14 @@
 # for python
 *.pyc
 
+# for cpp
+cmake-build-debug
+
 # for idea
 .idea
 
 # for temp script
-te.*
+temp.*
 
 # for database
 *.sqlite
