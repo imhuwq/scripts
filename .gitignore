@@ -1,7 +1,8 @@
 # for python
+venv
 *.pyc
 
-# for cpp
+# for c++ and c
 cmake-build-debug
 
 # for idea

@@ -1,0 +1,1 @@
+add_executable(compute_prime compute_prime.cpp)
