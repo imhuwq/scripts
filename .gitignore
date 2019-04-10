@@ -4,9 +4,11 @@ venv
 
 # for c++ and c
 cmake-build-debug
+cmake-build-debug-docker_scripts
 
 # for idea
 .idea
+.clion.source.upload.marker
 
 # for temp script
 temp.*
