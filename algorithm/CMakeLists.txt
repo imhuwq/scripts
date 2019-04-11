@@ -1,0 +1,2 @@
+add_executable(algs_find_element_range find_element_range.cpp)
+add_executable(algs_compute_prime compute_prime.cpp)

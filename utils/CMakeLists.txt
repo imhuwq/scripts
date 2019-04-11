@@ -2,4 +2,4 @@ project(show_bits)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(show_bits main.cpp)
+add_executable(util_show_bits show_bits.cpp)

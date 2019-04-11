@@ -1,1 +1,0 @@
-add_executable(find_element_range find_element_range.cpp)
