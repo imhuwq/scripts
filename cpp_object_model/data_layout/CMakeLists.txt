@@ -1,0 +1,3 @@
+add_executable(cpp_data_layout_simple_class simple_class.cpp)
+add_executable(cpp_data_layout_hierarchy_class hierarchy_class.cpp)
+add_executable(cpp_data_layout_performance data_performance.cpp)

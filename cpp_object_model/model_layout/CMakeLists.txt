@@ -1,2 +1,0 @@
-add_executable(cpp_model_simple_class simple_class.cpp)
-add_executable(cpp_model_hierarchy_class hierarchy_class.cpp)
