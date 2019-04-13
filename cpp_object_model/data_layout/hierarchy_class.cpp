@@ -1,152 +1,195 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "helper.h"
 
 inline
 int diff(void *a, void *b) { return ((char *) a - (char *) b); }
 
 class Thing {
 public:
-    float id;
+    int id;
 
-    static void DisplayLayout(Thing &thing) {
-        printf("Layout of Thing:\n");
-        printf("%-20s: %03d\n", "Size", sizeof(Thing));
-        printf("%-20s: %03d\n", "Offset", 0);
-        printf("%-20s: %03d\n", " Thing id", &Thing::id);
-        printf("%-20s: %p\n", "Address", &thing);
-        printf("%-20s: %p(+%02d)\n", " Thing id", &thing.id, diff(&thing.id, &thing));
-        printf("\n==========\n\n");
+    static void DisplayLayout(Thing *obj) {
+        PRINT_START(Thing);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_END();
     }
 };
 
-class Material: public Thing {
+class Material : public Thing {
 public:
-    float color;
+    float quality;
 
-    static void DisplayLayout(Material &material) {
-        printf("Layout of Material:\n");
-        printf("%-20s: %03d\n", "Size", sizeof(Material));
-        printf("%-20s: %03d\n", "Offset", 0);
-        printf("%-20s: %03d\n", " Thing id", &Material::id);
-        printf("%-20s: %03d\n", " Material Color", &Material::color);
-        printf("%-20s: %p\n", "Address", &material);
-        printf("%-20s: %p(+%02d)\n", " Thing id", &material.id, diff(&material.id, &material));
-        printf("%-20s: %p(+%02d)\n", " Material color", &material.color, diff(&material.color, &material));
-        printf("\n==========\n\n");
+    static void DisplayLayout(Material *obj) {
+        PRINT_START(Material);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_OFFSET("Material", obj, &obj->quality);
+        PRINT_END();
     }
 };
 
-class Paper : public virtual Thing {
+class Animal : public Thing {
 public:
-    float size;
+    float life;
 
-    static void DisplayLayout(Paper &paper) {
-        printf("Layout of Paper:\n");
-        printf("%-20s: %03d\n", "Size", sizeof(Paper));
-        printf("%-20s: %03d\n", "Offset", 0);
-        printf("%-20s: %03d\n", " Paper size", &Paper::size);
-        printf("%-20s: %03d(Runtime), %03d(Static)\n", " Thing id", diff(&paper.id, &paper), &Paper::id);
-        printf("%-20s: %p\n", "Address", &paper);
-        printf("%-20s: %p(+%02d)\n", " Paper vptr", &paper, diff(&paper, &paper));
-        printf("%-20s: %p(+%02d)\n", " Paper size", &paper.size, diff(&paper.size, &paper));
-        printf("%-20s: %p(+%02d)\n", " Thing id", &paper.id, diff(&paper.id, &paper));
-
-        printf("%-20s: %03d\n", "Paper Virtual Table", 0);
-        long *vptr = (long *) &paper;
-        long *vtbl = (long *) *vptr;
-        printf("%-20s: %p\n", " type info", *(vtbl - 1));
-        printf("%-20s: %02d\n", " top offset", *(vtbl - 2));
-        printf("%-20s: %02d\n", " vbase offset", *(vtbl - 3));
-
-        printf("\n==========\n\n");
+    static void DisplayLayout(Animal *obj) {
+        PRINT_START(Animal);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_OFFSET("Animal", obj, &obj->life);
+        PRINT_END();
     }
 };
 
-class Good : public virtual Thing {
+class Cat : public Animal {
 public:
-    float price;
+    int cute;
 
-    static void DisplayLayout(Good &good) {
-        printf("Layout of Good:\n");
-        printf("%-20s: %03d\n", "Size", sizeof(Good));
-        printf("%-20s: %03d\n", "Offset", 0);
-        printf("%-20s: %03d\n", " Good price", &Good::price);
-        printf("%-20s: %03d(Runtime), %03d(Static)\n", " Thing id", diff(&good.id, &good), &Good::id);
-        printf("%-20s: %p\n", "Address", &good);
-        printf("%-20s: %p(+%02d)\n", " Good vptr", &good, diff(&good, &good));
-        printf("%-20s: %p(+%02d)\n", " Good price", &good.price, diff(&good.price, &good));
-        printf("%-20s: %p(+%02d)\n", " Thing id", &good.id, diff(&good.id, &good));
+    virtual void Climb() { printf("calling Cat::Climb\n"); }
 
-        printf("%-20s: %03d\n", "Good Virtual Table", 0);
-        long *vptr = (long *) &good;
-        long *vtbl = (long *) *vptr;
-        printf("%-20s: %p\n", " type info", *(vtbl - 1));
-        printf("%-20s: %02d\n", " top offset", *(vtbl - 2));
-        printf("%-20s: %02d\n", " vbase offset", *(vtbl - 3));
+    virtual void Dance() { printf("calling Cat::Dance\n"); }
 
-        printf("\n==========\n\n");
+    static void DisplayLayout(Cat *obj) {
+        PRINT_START(Cat);
+        PRINT_OFFSET_VPTR("Cat", obj, obj);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_OFFSET("Animal", obj, &obj->life);
+        PRINT_OFFSET("Cat", obj, &obj->cute);
+        PRINT_SEPARATOR();
+
+        long *cat_vtable = (long *) *(long *) obj;
+        PRINT_VTABLE_START("Cat", cat_vtable);
+        PRINT_VTABLE_FUNC("Cat", cat_vtable, 0, "Climb");
+        PRINT_VTABLE_FUNC("Cat", cat_vtable, 1, "Dance");
+        PRINT_VTABLE_DATA("Cat", cat_vtable, -1, "TypeInfo")
+        PRINT_VTABLE_DATA("Cat", cat_vtable, -2, "TopOffset")
+        PRINT_VTABLE_DATA("Cat", cat_vtable, -3, "VbaseOffset")
+        PRINT_END();
     }
 };
 
-class Book : public virtual Paper, public virtual Good {
+class Bear : public Animal {
 public:
-    int count;
+    int horror;
 
-    static void DisplayLayout(Book &book) {
-        printf("Layout of Book:\n");
-        printf("%-20s: %03d\n", "Size", sizeof(Book));
-        printf("%-20s: %03d\n", "Offset", 0);
-        printf("%-20s: %03d\n", " Book count", &Book::count);
-        printf("%-20s: %03d(Runtime), %03d(Static)\n", " Paper size", diff(&book.size, &book), &Book::id);
-        printf("%-20s: %03d(Runtime), %03d(Static)\n", " Thing id", diff(&book.id, &book), &Book::id);
-        printf("%-20s: %03d(Runtime), %03d(Static)\n", " Good price", diff(&book.price, &book), &Book::id);
-        printf("%-20s: %p\n", "Address", &book);
-        printf("%-20s: %p(+%02d)\n", " Book vptr", &book, diff(&book, &book));
-        printf("%-20s: %p(+%02d)\n", " Book count", &book.count, diff(&book.count, &book));
-        printf("%-20s: %p(+%02d)\n", " Paper vptr", (long *) (Paper *) &book, diff((long *) (Paper *) &book, &book));
-        printf("%-20s: %p(+%02d)\n", " Paper size", &book.size, diff(&book.size, &book));
-        printf("%-20s: %p(+%02d)\n", " Thing id", &book.id, diff(&book.id, &book));
-        printf("%-20s: %p(+%02d)\n", " Good vptr", (long *) (Good *) &book, diff((long *) (Good *) &book, &book));
-        printf("%-20s: %p(+%02d)\n", " Good price", &book.price, diff(&book.price, &book));
+    virtual void Hug() { printf("calling Bear::Hug\n"); }
 
-        printf("%-20s: %03d\n", "Book Virtual Table", 0);
-        long *vptr = (long *) &book;
-        long *vtbl = (long *) *vptr;
-        printf("%-20s: %p\n", " type info", *(vtbl - 1));
-        printf("%-20s: %02d\n", " top offset", *(vtbl - 2));
-        printf("%-20s: %02d\n", " vbase offset", *(vtbl - 3));
+    virtual void Dance() { printf("calling Bear::Dance\n"); }
 
-        printf("%-20s: %03d\n", "Paper Virtual Table", 0);
-        vptr = (long *) (Paper *) &book;
-        vtbl = (long *) *vptr;
-        printf("%-20s: %p\n", " type info", *(vtbl - 1));
-        printf("%-20s: %02d\n", " top offset", *(vtbl - 2));
-        printf("%-20s: %02d\n", " vbase offset", *(vtbl - 3));
+    static void DisplayLayout(Bear *obj) {
+        PRINT_START(Bear);
+        PRINT_OFFSET_VPTR("Bear", obj, obj);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_OFFSET("Animal", obj, &obj->life);
+        PRINT_OFFSET("Bear", obj, &obj->horror);
+        PRINT_SEPARATOR();
 
-        printf("%-20s: %03d\n", "Good Virtual Table", 0);
-        vptr = (long *) (Good *) &book;
-        vtbl = (long *) *vptr;
-        printf("%-20s: %p\n", " type info", *(vtbl - 1));
-        printf("%-20s: %02d\n", " top offset", *(vtbl - 2));
-        printf("%-20s: %02d\n", " vbase offset", *(vtbl - 3));
+        long *bear_vtable = (long *) *(long *) obj;
+        PRINT_VTABLE_START("Bear", bear_vtable);
+        PRINT_VTABLE_FUNC("Bear", bear_vtable, 0, "Hug");
+        PRINT_VTABLE_FUNC("Bear", bear_vtable, 1, "Dance");
+        PRINT_VTABLE_DATA("Bear", bear_vtable, -1, "TypeInfo")
+        PRINT_VTABLE_DATA("Bear", bear_vtable, -2, "TopOffset")
+        PRINT_VTABLE_DATA("Bear", bear_vtable, -3, "VbaseOffset")
+        PRINT_END();
+    }
+};
 
-        printf("\n==========\n\n");
+class Leopard : public Cat {
+public:
+    float speed;
+
+    virtual void Climb() { printf("calling Leopard::Climb\n"); }
+
+    virtual void Run() { printf("calling Leopard::Run\n"); }
+
+    static void DisplayLayout(Leopard *obj) {
+        PRINT_START(Leopard);
+        PRINT_OFFSET_VPTR("Leopard", obj, obj);
+        PRINT_OFFSET("Thing", obj, &obj->id);
+        PRINT_OFFSET("Animal", obj, &obj->life);
+        PRINT_OFFSET("Cat", obj, &obj->cute);
+        PRINT_OFFSET("Leopard", obj, &obj->speed);
+        PRINT_SEPARATOR();
+
+        long *leopard_vtable = (long *) *(long *) obj;
+        PRINT_VTABLE_START("Leopard", leopard_vtable);
+        PRINT_VTABLE_FUNC("Leopard", leopard_vtable, 0, "Climb");
+        PRINT_VTABLE_FUNC("Leopard", leopard_vtable, 1, "Dance");
+        PRINT_VTABLE_FUNC("Leopard", leopard_vtable, 2, "Run");
+        PRINT_VTABLE_DATA("Leopard", leopard_vtable, -1, "TypeInfo")
+        PRINT_VTABLE_DATA("Leopard", leopard_vtable, -2, "TopOffset")
+        PRINT_VTABLE_DATA("Leopard", leopard_vtable, -3, "VbaseOffset")
+        PRINT_END();
+    }
+
+};
+
+class Panda : public Cat, public Bear {
+public:
+    float fat;
+
+    virtual void Dance() { printf("calling Panda::Dance\n"); }
+
+    virtual void Play() { printf("calling Panda::Play\n"); }
+
+    static void DisplayLayout(Panda *obj) {
+        Cat *cat_obj = obj;
+        Bear *bear_obj = obj;
+
+        PRINT_START(Panda);
+        PRINT_OFFSET_VPTR("Panda", obj, obj);
+        PRINT_OFFSET_VPTR("Cat", obj, cat_obj);
+        PRINT_OFFSET("Cat", obj, &cat_obj->id);
+        PRINT_OFFSET("Cat", obj, &cat_obj->life);
+        PRINT_OFFSET("Cat", obj, &obj->cute);
+        PRINT_OFFSET_VPTR("Bear", obj, bear_obj);
+        PRINT_OFFSET("Bear", obj, &bear_obj->id);
+        PRINT_OFFSET("Bear", obj, &bear_obj->life);
+        PRINT_OFFSET("Bear", obj, &obj->horror);
+        PRINT_OFFSET("Panda", obj, &obj->fat);
+
+        PRINT_SEPARATOR();
+
+        long *panda_vtable = (long *) *(long *) obj;
+        PRINT_VTABLE_START("Panda", panda_vtable);
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 0, "Climb");
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 1, "Dance");
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 2, "Play");
+        PRINT_VTABLE_DATA("Panda", panda_vtable, -1, "TypeInfo")
+        PRINT_VTABLE_DATA("Panda", panda_vtable, -2, "TopOffset")
+        PRINT_VTABLE_DATA("Panda", panda_vtable, -3, "VbaseOffset")
+
+        long *bear_vtable = (long *) *(long *) bear_obj;
+        PRINT_VTABLE_START("Panda::Bear", bear_vtable);
+        PRINT_VTABLE_FUNC("Panda::Bear", bear_vtable, 0, "Hug");
+        PRINT_VTABLE_FUNC("Panda::Bear", bear_vtable, 1, "Dance");
+        PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -1, "TypeInfo")
+        PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -2, "TopOffset")
+        PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -3, "VbaseOffset")
+        PRINT_END();
+
     }
 };
 
 int main() {
     Thing thing;
-    Thing::DisplayLayout(thing);
+    Thing::DisplayLayout(&thing);
 
     Material material;
-    Material::DisplayLayout(material);
+    Material::DisplayLayout(&material);
 
-    Paper paper;
-    Paper::DisplayLayout(paper);
+    Animal animal;
+    Animal::DisplayLayout(&animal);
 
-    Good good;
-    Good::DisplayLayout(good);
+    Cat cat;
+    Cat::DisplayLayout(&cat);
 
-    Book book;
-    Book::DisplayLayout(book);
+    Bear bear;
+    Bear::DisplayLayout(&bear);
+
+    Leopard leopard;
+    Leopard::DisplayLayout(&leopard);
+
+    Panda panda;
+    Panda::DisplayLayout(&panda);
 }

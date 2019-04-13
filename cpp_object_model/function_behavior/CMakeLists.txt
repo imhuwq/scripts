@@ -1,0 +1,1 @@
+add_executable(cpp_function_behavior_inheritance_contradiction inheritance_contradiction.cpp)
