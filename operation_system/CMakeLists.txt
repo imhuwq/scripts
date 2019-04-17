@@ -1,1 +1,2 @@
-add_subdirectory(concurrency)
+add_subdirectory(process_concurrency)
+add_subdirectory(thread_concurrency)

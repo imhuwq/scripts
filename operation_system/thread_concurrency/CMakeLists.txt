@@ -1,0 +1,6 @@
+add_executable(os_con_create_thread create_thread.cpp)
+add_executable(os_con_cancel_thread cancel_thread.cpp)
+add_executable(os_con_exit_thread exit_thread.cpp)
+add_executable(os_con_join_thread join_thread.cpp)
+add_executable(os_con_exit_thread_main exit_thread_main.cpp)
+add_executable(os_con_detatch_thread detatch_thread.cpp)
