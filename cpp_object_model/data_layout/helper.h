@@ -1,9 +1,12 @@
 #ifndef SCRIPTS_C_HELPER_H
 #define SCRIPTS_C_HELPER_H
 
+inline
+int diff(void *a, void *b) { return ((char *) a - (char *) b); }
+
 #define FUNC_T void(*)()
 
-#define PRINT_START(cls) printf("%s Layout (%03ld):\n%-20s::%-20s: %s\n", \
+#define PRINT_START(cls) printf("%s Layout (Total Size %03ld):\n%-20s::%-20s: %s\n", \
                                 #cls, sizeof(cls), "SubObject","Attribute","Offset(~Size) 0xAddress")
 #define PRINT_OFFSET(cls, obj, attr) printf("%-20s::%-20s: %06d(~%04ld) %p\n",\
                                             cls, #attr, diff(attr, obj),sizeof(*attr), (void *)attr)

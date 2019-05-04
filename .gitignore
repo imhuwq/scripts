@@ -4,6 +4,9 @@ venv
 
 # for c++ and c
 cmake-build-debug
+cmake-build-debug-wsl
+cmake-build-debug-mingw
+cmake-build-debug-visual-studio
 cmake-build-debug-docker_scripts
 
 # for idea
