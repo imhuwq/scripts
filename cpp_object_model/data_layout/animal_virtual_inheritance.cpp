@@ -56,7 +56,7 @@ public:
 
         long *animal_vtable = (long *) *(long *) animal_obj;
         PRINT_VTABLE_START("Cat::Animal", animal_vtable);
-        PRINT_VTABLE_FUNC("Cat", animal_vtable, 0, "Dance");
+        PRINT_VTABLE_FUNC("Cat::Animal", animal_vtable, 0, "Dance");
         PRINT_VTABLE_DATA("Cat::Animal", animal_vtable, -1, "TypeInfo")
         PRINT_VTABLE_DATA("Cat::Animal", animal_vtable, -2, "TopOffset")
         PRINT_VTABLE_DATA("Cat::Animal", animal_vtable, -3, "VbaseOffset")
@@ -93,7 +93,7 @@ public:
 
         long *animal_vtable = (long *) *(long *) animal_obj;
         PRINT_VTABLE_START("Bear::Animal", animal_vtable);
-        PRINT_VTABLE_FUNC("Bear", animal_vtable, 0, "Dance");
+        PRINT_VTABLE_FUNC("Bear::Animal", animal_vtable, 0, "Dance");
         PRINT_VTABLE_DATA("Bear::Animal", animal_vtable, -1, "TypeInfo")
         PRINT_VTABLE_DATA("Bear::Animal", animal_vtable, -2, "TopOffset")
         PRINT_VTABLE_DATA("Bear::Animal", animal_vtable, -3, "VbaseOffset")
@@ -118,17 +118,17 @@ public:
 
         PRINT_OFFSET_VPTR("Panda", obj, obj);
         PRINT_OFFSET("Cat", obj, &cat_obj->cute);
-        PRINT_OFFSET_VPTR("Panda::Bear", obj, bear_obj);
+        PRINT_OFFSET_VPTR("Bear", obj, bear_obj);
         PRINT_OFFSET("Bear", obj, &bear_obj->horror);
         PRINT_OFFSET("Panda", obj, &obj->fat);
-        PRINT_OFFSET_VPTR("Panda::Animal", obj, animal_obj);
+        PRINT_OFFSET_VPTR("Animal", obj, animal_obj);
         PRINT_OFFSET("Animal", obj, &obj->id);
         PRINT_OFFSET("Animal", obj, &obj->life);
         PRINT_OFFSET("Animal", obj, &obj->name);
 
         long *panda_vtable = (long *) *(long *) obj;
         PRINT_VTABLE_START("Panda", panda_vtable);
-        PRINT_VTABLE_FUNC("Cat", panda_vtable, 0, "climb");
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 0, "climb");
         PRINT_VTABLE_FUNC("Panda", panda_vtable, 1, "dance");
         PRINT_VTABLE_FUNC("Panda", panda_vtable, 2, "play");
         PRINT_VTABLE_DATA("Panda", panda_vtable, -1, "TypeInfo")
@@ -136,24 +136,24 @@ public:
         PRINT_VTABLE_DATA("Panda", panda_vtable, -3, "VbaseOffset")
 
         long *cat_vtable = (long *) *(long *) cat_obj;
-        PRINT_VTABLE_START("Cat", cat_vtable);
-        PRINT_VTABLE_FUNC("Cat", cat_vtable, 0, "climb");
-        PRINT_VTABLE_FUNC("Panda", cat_vtable, 1, "dance");
+        PRINT_VTABLE_START("Panda::Cat", cat_vtable);
+        PRINT_VTABLE_FUNC("Panda::Cat", cat_vtable, 0, "climb");
+        PRINT_VTABLE_FUNC("Panda::Cat", cat_vtable, 1, "dance");
         PRINT_VTABLE_DATA("Panda::Cat", cat_vtable, -1, "TypeInfo")
         PRINT_VTABLE_DATA("Panda::Cat", cat_vtable, -2, "TopOffset")
         PRINT_VTABLE_DATA("Panda::Cat", cat_vtable, -3, "VbaseOffset")
 
         long *bear_vtable = (long *) *(long *) bear_obj;
-        PRINT_VTABLE_START("Bear", bear_vtable);
-        PRINT_VTABLE_FUNC("Bear", bear_vtable, 0, "hug");
-        PRINT_VTABLE_FUNC("Panda", bear_vtable, 1, "dance");
+        PRINT_VTABLE_START("Panda::Bea", bear_vtable);
+        PRINT_VTABLE_FUNC("Panda::Bea", bear_vtable, 0, "hug");
+        PRINT_VTABLE_FUNC("Panda::Bea", bear_vtable, 1, "dance");
         PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -1, "TypeInfo")
         PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -2, "TopOffset")
         PRINT_VTABLE_DATA("Panda::Bear", bear_vtable, -3, "VbaseOffset")
 
         long *animal_vtable = (long *) *(long *) animal_obj;
-        PRINT_VTABLE_START("Animal", animal_vtable);
-        PRINT_VTABLE_FUNC("Panda", animal_vtable, 0, "dance");
+        PRINT_VTABLE_START("Panda::Animal", animal_vtable);
+        PRINT_VTABLE_FUNC("Panda::Animal", animal_vtable, 0, "dance");
         PRINT_VTABLE_DATA("Panda::Animal", animal_vtable, -1, "TypeInfo")
         PRINT_VTABLE_DATA("Panda::Animal", animal_vtable, -2, "TopOffset")
         PRINT_VTABLE_DATA("Panda::Animal", animal_vtable, -3, "VbaseOffset")

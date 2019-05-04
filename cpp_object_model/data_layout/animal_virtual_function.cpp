@@ -50,7 +50,7 @@ public:
         long *cat_vtable = (long *) *(long *) obj;
         PRINT_VTABLE_START("Cat", cat_vtable);
         PRINT_VTABLE_FUNC("Cat", cat_vtable, 0, "dance");
-        PRINT_VTABLE_FUNC("Animal", cat_vtable, 1, "eat");
+        PRINT_VTABLE_FUNC("Cat", cat_vtable, 1, "eat");
         PRINT_VTABLE_FUNC("Cat", cat_vtable, 2, "climb");
 
         PRINT_END();
@@ -76,7 +76,7 @@ public:
         long *bear_vtable = (long *) *(long *) obj;
         PRINT_VTABLE_START("Bear", bear_vtable);
         PRINT_VTABLE_FUNC("Bear", bear_vtable, 0, "dance");
-        PRINT_VTABLE_FUNC("Animal", bear_vtable, 1, "eat");
+        PRINT_VTABLE_FUNC("Bear", bear_vtable, 1, "eat");
         PRINT_VTABLE_FUNC("Bear", bear_vtable, 2, "hug");
 
         PRINT_END();
@@ -96,6 +96,7 @@ public:
         Cat *cat_obj = obj;
         Bear *bear_obj = obj;
         PRINT_OFFSET_VPTR("Panda", obj, obj);
+        PRINT_OFFSET_VPTR("Panda::cat", obj, cat_obj);
         PRINT_OFFSET("Cat::Animal", obj, &cat_obj->id);
         PRINT_OFFSET("Cat::Animal", obj, &cat_obj->life);
         PRINT_OFFSET("Cat::Animal", obj, &cat_obj->name);
@@ -110,21 +111,21 @@ public:
         long *panda_vtable = (long *) *(long *) obj;
         PRINT_VTABLE_START("Panda", panda_vtable);
         PRINT_VTABLE_FUNC("Panda", panda_vtable, 0, "dance");
-        PRINT_VTABLE_FUNC("Animal", panda_vtable, 1, "eat");
-        PRINT_VTABLE_FUNC("Cat", panda_vtable, 2, "climb");
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 1, "eat");
+        PRINT_VTABLE_FUNC("Panda", panda_vtable, 2, "climb");
         PRINT_VTABLE_FUNC("Panda", panda_vtable, 3, "play");
 
         long *cat_vtable = (long *) *(long *) cat_obj;
         PRINT_VTABLE_START("Panda::Cat", cat_vtable);
-        PRINT_VTABLE_FUNC("Bear", cat_vtable, 0, "dance");
-        PRINT_VTABLE_FUNC("Animal", cat_vtable, 1, "eat");
-        PRINT_VTABLE_FUNC("Cat", cat_vtable, 2, "climb");
+        PRINT_VTABLE_FUNC("Panda::Cat", cat_vtable, 0, "dance");
+        PRINT_VTABLE_FUNC("Panda::Cat", cat_vtable, 1, "eat");
+        PRINT_VTABLE_FUNC("Panda::Cat", cat_vtable, 2, "climb");
 
         long *bear_vtable = (long *) *(long *) bear_obj;
         PRINT_VTABLE_START("Panda::Bear", bear_vtable);
-        PRINT_VTABLE_FUNC("Bear", bear_vtable, 0, "dance");
-        PRINT_VTABLE_FUNC("Animal", bear_vtable, 1, "eat");
-        PRINT_VTABLE_FUNC("Bear", bear_vtable, 2, "hug");
+        PRINT_VTABLE_FUNC("Panda::Bear", bear_vtable, 0, "dance");
+        PRINT_VTABLE_FUNC("Panda::Bear", bear_vtable, 1, "eat");
+        PRINT_VTABLE_FUNC("Panda::Bear", bear_vtable, 2, "hug");
 
         PRINT_END();
     }
